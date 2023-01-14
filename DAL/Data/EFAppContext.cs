@@ -16,6 +16,8 @@ namespace DAL.Data
         public DbSet<OrderStatusEnitty> OrderStatuses { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
         public DbSet<OrderItemEnitty> OrderItems { get; set; }
+        public DbSet<RoleEntity> Roles { get; set; }
+        public DbSet<UserRoleEntity> UserRoles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -27,6 +29,11 @@ namespace DAL.Data
             builder.Entity<BasketEntity>(basket =>
             {
                 basket.HasKey(b => new { b.UserId, b.ProductId });
+            });
+
+            builder.Entity<UserRoleEntity>(ur =>
+            {
+                ur.HasKey(b => new { b.UserId, b.RoleId });
             });
         }
     }
