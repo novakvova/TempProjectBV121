@@ -27,8 +27,7 @@ namespace ConsoleTest
             {
                 Console.WriteLine("У табличні назв фільтрів пусто");
                 string[] filterNames = { 
-                    "Dell", "HP", "Lenovo",
-                    "Intel Core i5", "Intel Core i7"
+                    "Виробник", "Процесор"
                 };
 
                 foreach(string filterName in filterNames)
@@ -43,7 +42,25 @@ namespace ConsoleTest
                 }
             }
 
+            if (!context.FitlerValues.Any())
+            {
+                Console.WriteLine("У табличні назв фільтрів пусто");
+                string[] filterValues = {
+                    "HP", "Dell", "Lenovo",
+                    "Intel Core i5", "Intel Core i7"
+                };
 
+                foreach (string filterValue in filterValues)
+                {
+                    var fv = new FilterValueEntity
+                    {
+                        DateCreated = DateTime.Now,
+                        Name = filterValue,
+                    };
+                    context.FitlerValues.Add(fv);
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }
