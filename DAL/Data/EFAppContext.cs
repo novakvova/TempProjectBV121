@@ -18,6 +18,7 @@ namespace DAL.Data
         public DbSet<OrderItemEnitty> OrderItems { get; set; }
         public DbSet<RoleEntity> Roles { get; set; }
         public DbSet<UserRoleEntity> UserRoles { get; set; }
+        public DbSet<FilterNameEntity> FilterNames{ get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

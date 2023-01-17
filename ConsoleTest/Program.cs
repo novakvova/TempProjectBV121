@@ -2,6 +2,7 @@
 using DAL.Data.Entities;
 using DAL.Interfaces;
 using DAL.Repository;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 
 namespace ConsoleTest
@@ -12,15 +13,35 @@ namespace ConsoleTest
         {
             EFAppContext context = new EFAppContext();
 
-            ICategoryRepository categoryRepository = new CategoryRepository(context);
+            //ICategoryRepository categoryRepository = new CategoryRepository(context);
 
-            CategoryEntity cat = new CategoryEntity()
+            //CategoryEntity cat = new CategoryEntity()
+            //{
+            //    Name = "Смачні стави",
+            //    DateCreated = DateTime.Now
+            //};
+
+            //categoryRepository.Create(cat);
+
+            if(!context.FilterNames.Any())
             {
-                Name = "Смачні стави",
-                DateCreated = DateTime.Now
-            };
+                Console.WriteLine("У табличні назв фільтрів пусто");
+                string[] filterNames = { 
+                    "Dell", "HP", "Lenovo",
+                    "Intel Core i5", "Intel Core i7"
+                };
 
-            categoryRepository.Create(cat);
+                foreach(string filterName in filterNames)
+                {
+                    var fn = new FilterNameEntity
+                    {
+                        DateCreated = DateTime.Now,
+                        Name = filterName,
+                    };
+                    context.FilterNames.Add(fn);
+                    context.SaveChanges();
+                }
+            }
 
 
         }
