@@ -20,6 +20,7 @@ namespace DAL.Data
         public DbSet<UserRoleEntity> UserRoles { get; set; }
         public DbSet<FilterNameEntity> FilterNames{ get; set; }
         public DbSet<FilterValueEntity> FitlerValues{ get; set; }
+        public DbSet<FilterNameGroupEntity> filterNameGroups{ get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -36,6 +37,10 @@ namespace DAL.Data
             builder.Entity<UserRoleEntity>(ur =>
             {
                 ur.HasKey(b => new { b.UserId, b.RoleId });
+            });
+            builder.Entity<FilterNameGroupEntity>(fng =>
+            {
+                fng.HasKey(b => new { b.FilterNameId, b.FilterValueId });
             });
         }
     }
