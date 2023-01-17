@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 
 namespace ConsoleTest
 {
@@ -64,7 +66,7 @@ namespace ConsoleTest
                 }
             }
 
-            if (!context.filterNameGroups.Any())
+            if (!context.FilterNameGroups.Any())
             {
                 Console.WriteLine("У табличні групування фільтрів пусто");
                 Dictionary<int, int> fng = new Dictionary<int, int>
@@ -83,10 +85,49 @@ namespace ConsoleTest
                         FilterNameId= data.Value,
                         FilterValueId = data.Key
                     };
-                    context.filterNameGroups.Add(entity);
+                    context.FilterNameGroups.Add(entity);
                     context.SaveChanges();
                 }
             }
+
+            var queryName = from f in context.FilterNames.AsQueryable()
+                            select f;
+            var queryGroup = from g in context.FilterNameGroups.AsQueryable()
+                             select g;
+            //Загальна множина значень
+            var query = from u in queryName
+                        join g in queryGroup on u.Id equals g.FilterNameId into ua
+                        from empty in ua.DefaultIfEmpty()
+                        select new
+                        {
+                            FNameId = u.Id,
+                            FName = u.Name,
+                            FValueId = empty != null ? empty.FilterValueId : 0,
+                            FValue = empty != null ? empty.FilterValue.Name : null,
+                        }                        ;
+            //var info = query.Where(x=>x.FValueId!=0).ToList();
+
+            var groupData = query
+                .Where(x => x.FValueId != 0)
+                .AsEnumerable()
+                .GroupBy(f => new { Id = f.FNameId, Name = f.FName })
+                .Select(g=>g)
+                .OrderBy(x=>x.Key.Name);
+
+            var result = groupData.Select(fName => new
+            {
+                Id = fName.Key.Id,
+                Name = fName.Key.Name,
+
+                Children = fName
+                    .GroupBy(v => new { Id = v.FValueId, Name = v.FValue })
+                    .Select(g=>g.Key)
+                    .OrderBy(x=>x.Name)
+            }); 
+
+
         }
+
+
     }
 }

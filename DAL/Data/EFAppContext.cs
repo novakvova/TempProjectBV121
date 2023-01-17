@@ -20,7 +20,7 @@ namespace DAL.Data
         public DbSet<UserRoleEntity> UserRoles { get; set; }
         public DbSet<FilterNameEntity> FilterNames{ get; set; }
         public DbSet<FilterValueEntity> FitlerValues{ get; set; }
-        public DbSet<FilterNameGroupEntity> filterNameGroups{ get; set; }
+        public DbSet<FilterNameGroupEntity> FilterNameGroups{ get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
