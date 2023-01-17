@@ -3,7 +3,9 @@ using DAL.Data.Entities;
 using DAL.Interfaces;
 using DAL.Repository;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleTest
 {
@@ -44,7 +46,7 @@ namespace ConsoleTest
 
             if (!context.FitlerValues.Any())
             {
-                Console.WriteLine("У табличні назв фільтрів пусто");
+                Console.WriteLine("У табличні значення фільтрів пусто");
                 string[] filterValues = {
                     "HP", "Dell", "Lenovo",
                     "Intel Core i5", "Intel Core i7"
@@ -58,6 +60,30 @@ namespace ConsoleTest
                         Name = filterValue,
                     };
                     context.FitlerValues.Add(fv);
+                    context.SaveChanges();
+                }
+            }
+
+            if (!context.filterNameGroups.Any())
+            {
+                Console.WriteLine("У табличні групування фільтрів пусто");
+                Dictionary<int, int> fng = new Dictionary<int, int>
+                {
+                    { 1, 1 },
+                    { 2, 1 },
+                    { 3, 1 },
+                    { 4, 2},
+                    { 5, 2 }
+                };
+
+                foreach (var data in fng)
+                {
+                    var entity = new FilterNameGroupEntity
+                    {
+                        FilterNameId= data.Value,
+                        FilterValueId = data.Key
+                    };
+                    context.filterNameGroups.Add(entity);
                     context.SaveChanges();
                 }
             }
