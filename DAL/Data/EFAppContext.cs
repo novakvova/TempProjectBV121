@@ -21,6 +21,7 @@ namespace DAL.Data
         public DbSet<FilterNameEntity> FilterNames{ get; set; }
         public DbSet<FilterValueEntity> FitlerValues{ get; set; }
         public DbSet<FilterNameGroupEntity> FilterNameGroups{ get; set; }
+        public DbSet<FilterEntity> Filters { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -41,6 +42,11 @@ namespace DAL.Data
             builder.Entity<FilterNameGroupEntity>(fng =>
             {
                 fng.HasKey(b => new { b.FilterNameId, b.FilterValueId });
+            });
+
+            builder.Entity<FilterEntity>(f =>
+            {
+                f.HasKey(b => new { b.FilterNameId, b.FilterValueId, b.ProductId });
             });
         }
     }

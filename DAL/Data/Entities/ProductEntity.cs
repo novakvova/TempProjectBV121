@@ -20,5 +20,6 @@ namespace DAL.Data.Entities
         public virtual ICollection<ProductImageEntity> Images { get; set; }
         public virtual ICollection<BasketEntity> Baskets { get; set; }
         public virtual ICollection<OrderItemEnitty> OrderItems { get; set; }
+        public virtual ICollection<FilterEntity> Filters { get; set; }
     }
 }
