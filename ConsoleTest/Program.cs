@@ -18,6 +18,11 @@ namespace ConsoleTest
         {
             EFAppContext context = new EFAppContext();
 
+            var userId = 4;
+            var search = context.Orders.AsQueryable();
+            search = search.Where(x => !x.IsDelete);
+            var ordersUser = search.Where(o => o.UserId == userId).ToList();
+
             //ICategoryRepository categoryRepository = new CategoryRepository(context);
 
             //CategoryEntity cat = new CategoryEntity()
